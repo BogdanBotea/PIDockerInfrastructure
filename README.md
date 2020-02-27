@@ -38,7 +38,7 @@ Install Ubuntu Server 18.04 build for Raspberry PI 4 from [official website down
 
 5. Change the source:
 
-`nano etc/apt/sources.list` 
+`nano etc/apt/sources.list`
 
 6. Modify the docker source to look like the following:
 
@@ -120,7 +120,7 @@ Install Ubuntu Server 18.04 build for Raspberry PI 4 from [official website down
     # Proxy for Portainer
     ProxyPass /portainer/ http://localhost:9000/
     ProxyPassReverse /portainer/ http://localhost:9000/
-    
+
 </VirtualHost>
 
 ```
@@ -140,10 +140,9 @@ Install Ubuntu Server 18.04 build for Raspberry PI 4 from [official website down
 
 `docker exec -it mysql_container mysql -uroot -prootpw`
 
+`CREATE USER 'root'@'%' IDENTIFIED BY 'rootpw';`
+
 `GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;`
-
-`GRANT ALL PRIVILEGES ON *.* TO 'root'@'youripaddres' WITH GRANT OPTION;`
-
 
 ### Utils
 Get system thermal (can be set as an alias = temp)
