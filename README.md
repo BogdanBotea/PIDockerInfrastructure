@@ -38,9 +38,9 @@ Install Ubuntu Server 18.04 build for Raspberry PI 4 from [official website down
 
 5. Change the source:
 
-`nano etc/apt/sources.list`
+`sudo nano etc/apt/sources.list`
 
-6. Modify the docker source to look like the following:
+6. Comment the docker source and add the following source:
 
 (at the bottom of the file)
 
@@ -78,20 +78,11 @@ Install Ubuntu Server 18.04 build for Raspberry PI 4 from [official website down
 
 `docker-compose`
 
-# Install Portainer
-1. Pull the Docker image
-
-`docker pull portainer/portainer`
-
-2. Run container from image
-
-`docker run -d -p 127.0.0.1:9000:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer`
-
 # Install & Configure Apache (Reverse Proxy Portainer)
 
 1. Install through apt
 
-`apt-get install apache2`
+`sudo apt-get install apache2`
 
 2. Enable extensions for reverse proxy
 
@@ -102,30 +93,52 @@ Install Ubuntu Server 18.04 build for Raspberry PI 4 from [official website down
 `sudo a2enmod proxy_balancer`
 
 3. Restart Apache
-`systemctl restart apache2`
+`sudo systemctl restart apache2`
 
 4. Modify the default config file
 
-`nano /etc/apache2/sites-enabled/{default}.conf`
+`sudo nano /etc/apache2/sites-enabled/{default}.conf`
 
 ```
 <VirtualHost *:80>
 
-    ServerName yourip
+	# ServerName is optional
+    # {ip} represents the machine IP address
+    ServerName {ip}
 
     ProxyPreserveHost On
     RewriteEngine On
     ProxyRequests Off
 
-    # Proxy for Portainer
-    ProxyPass /portainer/ http://localhost:9000/
-    ProxyPassReverse /portainer/ http://localhost:9000/
+    # Proxy for web application
+    # {path} - URL segment that will be used to identify the web application
+    # {port} - local port on wich the web application will run
+    ProxyPass /{path}/ http://localhost:{port}/
+    ProxyPassReverse /{path}/ http://localhost:{port}/
 
 </VirtualHost>
 
 ```
 
-# Install & Configure MySql Docker Container
+## Docker Containers
+
+### Portainer
+1. Pull the Docker image
+
+`docker pull portainer/portainer`
+
+2. Run container from image
+
+`docker run -d -p 127.0.0.1:9000:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer`
+
+3. Add reverse proxy configuration to sites-enabled in Apache
+
+```
+ProxyPass /portainer/ http://localhost:9000/
+ProxyPassReverse /portainer/ http://localhost:9000/
+```
+
+### MySql
 
 
 1. Pull the image from [DockerHub](https://hub.docker.com/r/mysql/mysql-server).
@@ -143,6 +156,32 @@ Install Ubuntu Server 18.04 build for Raspberry PI 4 from [official website down
 `CREATE USER 'root'@'%' IDENTIFIED BY 'rootpw';`
 
 `GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;`
+
+4. Test connection from remote computer
+
+
+# Create multiple virtual IP addresses
+
+1. Edit current netplan
+
+`sudo nano /etc/netplan/50-cloud-init.yaml`
+
+Add addresses section under the current network interface
+
+```
+network:
+    ethernets:
+        eth0:
+        	# {IP1} - {IPN} are virtual IPs that will be bounded
+            addresses: [{IP1}/24,{IPN}/24]
+            dhcp4: true
+            optional: true
+    version: 2
+```
+
+2. Apply changes to the netplan
+
+`sudo netplan apply`
 
 ### Utils
 Get system thermal (can be set as an alias = temp)
