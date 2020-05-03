@@ -184,6 +184,29 @@ network:
 `sudo netplan apply`
 
 ### Utils
+
+#### Disk Analyzer
+A disk analyzer helps identify issues with phisical memory.
+ 
+##### NCurses Disk Usage - ncdu
+1. Install ncdu
+
+`sudo apt-get install ncdu`
+
+2. Scan system
+
+`sudo ncdu -x -q`
+
+Flag explanation:
+```
+-q Quiet mode, doesn't update the screen 10 times a second
+   while scanning, reduces network bandwidth used
+
+-x Don't cross filesystem borders (don't descend into a
+   directory which is a mounted disk)
+```
+
+#### Thermals
 Get system thermal (can be set as an alias = temp)
 
 `cat /sys/class/thermal/thermal_zone0/temp`
