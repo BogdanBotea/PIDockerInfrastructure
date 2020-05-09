@@ -92,6 +92,8 @@ Install Ubuntu Server 18.04 build for Raspberry PI 4 from [official website down
 
 `sudo a2enmod proxy_balancer`
 
+`sudo a2enmod rewrite`
+
 3. Restart Apache
 `sudo systemctl restart apache2`
 
