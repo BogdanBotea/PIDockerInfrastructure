@@ -1,6 +1,6 @@
 # Raspberry PI 4 - Docker Infrastructure
 
-== OS: Ubuntu Server 18.04 ==
+OS: Ubuntu Server 18.04
 
 # Install Ubuntu Server OS
 
@@ -187,7 +187,7 @@ network:
 
 ### Utils
 
-####Get system thermal (can be set as an alias = temp)
+#### Get system thermal (can be set as an alias = temp)
 
 `cat /sys/class/thermal/thermal_zone0/temp`
 
