@@ -187,9 +187,35 @@ network:
 
 ### Utils
 
+####Get system thermal (can be set as an alias = temp)
+
+`cat /sys/class/thermal/thermal_zone0/temp`
+
+#### Get RAM usage
+
+`free -h` (h for human-readable output)
+
+#### Get CPU info
+
+`cat /proc/cpuinfo`
+
+#### Check read / write speeds for MicroSD card
+
+In order to check for read / write speeds you must be logged in as root.
+
+Read speed
+
+`sync; echo 3 | tee /proc/sys/vm/drop_caches` (clear cache)
+`dd if=~/test.tmp of=/dev/null bs=500K count=1024`
+
+Write speed
+
+`sync; echo 3 | tee /proc/sys/vm/drop_caches` (clear cache)
+`dd if=/dev/zero of=~/test.tmp bs=500K count=1024`
+
 #### Disk Analyzer
 A disk analyzer helps identify issues with phisical memory.
- 
+
 ##### NCurses Disk Usage - ncdu
 1. Install ncdu
 
