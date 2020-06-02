@@ -206,11 +206,13 @@ In order to check for read / write speeds you must be logged in as root.
 Read speed
 
 `sync; echo 3 | tee /proc/sys/vm/drop_caches` (clear cache)
+
 `dd if=~/test.tmp of=/dev/null bs=500K count=1024`
 
 Write speed
 
 `sync; echo 3 | tee /proc/sys/vm/drop_caches` (clear cache)
+
 `dd if=/dev/zero of=~/test.tmp bs=500K count=1024`
 
 #### Disk Analyzer
