@@ -131,7 +131,7 @@ Install Ubuntu Server 18.04 build for Raspberry PI 4 from [official website down
 
 2. Run container from image
 
-`docker run -d -p 127.0.0.1:9000:9000 -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer`
+`docker run -d -p 127.0.0.1:9000:9000 -v /var/run/docker.sock:/var/run/docker.sock --name portainer_container portainer/portainer`
 
 3. Add reverse proxy configuration to sites-enabled in Apache
 
@@ -231,6 +231,18 @@ Flag explanation:
 ```
 
 #### Thermals
-Get system thermal (can be set as an alias = temp)
+Get system thermal (we will set as an alias = temp)
 
 `cat /sys/class/thermal/thermal_zone0/temp`
+
+Create and persist alias for thermal (alias = temp)
+
+`sudo nano ~/.bashrc`
+
+Add the next command to the end of the file
+
+`alias temp='cat /sys/class/thermal/thermal_zone0/temp'`
+
+Persist changes
+
+`source ~/.bashrc`
